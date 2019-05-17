@@ -1,0 +1,52 @@
+﻿@model List<Lab1.Models.ViewModels.User>
+
+@{
+    ViewData["Title"] = "Users";
+}
+
+<h2>Users</h2>
+<hr />
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Gender
+            </th>
+            <th>
+                Age
+            </th>
+            <th>
+                Country
+            </th>
+            <th>
+                Revenue
+            </th>
+            <th>
+                Broke economy
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in @Model)
+        {
+            <tr>
+                <td>
+                    @user.Gender
+                </td>
+                <td>
+                    @user.Age
+                </td>
+                <td>
+                    @user.Country
+                </td>
+                <td>
+                    @user.Revenue
+                </td>
+                <td>
+                    @user.BrokeEconomy
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

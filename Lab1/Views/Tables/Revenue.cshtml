@@ -1,0 +1,34 @@
+﻿@model List<Lab1.Models.ViewModels.RevenueViewModel>
+
+@{
+    ViewData["Title"] = "Revenue";
+}
+
+<h2>Revenue</h2>
+<hr />
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model[0].Date)
+            </th>
+            <th>
+                Revenue
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var rev in Model)
+        {
+            <tr>
+                <td>
+                    @rev.Date.ToShortDateString()
+                </td>
+                <td>
+                    @rev.Income
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

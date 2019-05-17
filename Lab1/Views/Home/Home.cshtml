@@ -1,0 +1,22 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<h2>MAIN</h2>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-controller="Home" asp-action="UploadJsonToDb" method="post">
+            <label class="control-label">Index</label>
+            <input type="number" name="index" class="form-control" />
+            <br>
+            <input value="Send" type="submit" class="btn btn-default" />
+        </form>
+
+
+    </div>
+    <div class="col-md-4"></div>
+    <form asp-controller="Home" asp-action="ClearDb">
+        <input value="ClearDb" type="submit" class="btn btn-danger btn-lg" />
+    </form>
+</div>

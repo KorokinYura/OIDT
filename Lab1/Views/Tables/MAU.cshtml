@@ -1,0 +1,37 @@
+﻿@model Lab1.Models.ViewModels.MAUViewModel
+
+@{
+    ViewData["Title"] = "MAU";
+}
+
+<h2>MAU</h2>
+<hr />
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.StartDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EndDate)
+            </th>
+            <th>
+                Quantity
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                @Model.StartDate.ToShortDateString()
+            </td>
+            <td>
+                @Model.EndDate.ToShortDateString()
+            </td>
+            <td>
+                @Model.UsersQuantity
+            </td>
+        </tr>
+    </tbody>
+</table>

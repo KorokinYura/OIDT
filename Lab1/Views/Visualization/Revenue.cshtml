@@ -1,0 +1,53 @@
+﻿@model List<Lab1.Models.ViewModels.RevenueViewModel>
+
+@{
+    ViewData["Title"] = "Users";
+}
+
+<h2>Users</h2>
+<hr />
+
+<canvas id="NewUsers" style="max-width: 1000px;"></canvas>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+@{
+    ViewData["DatesList"] = @Model.Select(r => r.Date).ToArray();
+    ViewData["RevenueList"] = @Model.Select(r => r.Income).ToArray();
+}
+
+<script>
+    var datesList = @Html.Raw(Json.Serialize(ViewData["DatesList"]));
+    var revenueList = @Html.Raw(Json.Serialize(ViewData["RevenueList"]));
+
+    console.log(datesList);
+    console.log(revenueList);
+
+    var ctx = document.getElementById("NewUsers").getContext('2d');
+    var NewUsersChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: datesList,
+            datasets: [{
+                label: '# of Votes',
+                data: revenueList,
+                backgroundColor:
+                    'rgba(255, 99, 132, 0.2)',
+                borderColor:
+                    'rgba(255,99,132,1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    });
+
+</script>

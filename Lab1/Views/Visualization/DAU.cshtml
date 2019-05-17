@@ -1,0 +1,53 @@
+﻿@model List<Lab1.Models.ViewModels.DAUViewModel>
+
+@{
+    ViewData["Title"] = "Users";
+}
+
+<h2>Users</h2>
+<hr />
+
+<canvas id="DAU" style="max-width: 1000px;"></canvas>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+@{
+    ViewData["DaysList"] = @Model.Select(d => d.Date).ToArray();
+    ViewData["DAUList"] = @Model.Select(d => d.UsersQuantity).ToArray();
+}
+
+<script>
+    var daysList = @Html.Raw(Json.Serialize(ViewData["DaysList"]));
+    var DAUList = @Html.Raw(Json.Serialize(ViewData["DAUList"]));
+
+    console.log(daysList);
+    console.log(DAUList);
+
+    var ctx = document.getElementById("DAU").getContext('2d');
+    var DAUChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: daysList,
+            datasets: [{
+                label: '# of Votes',
+                data: DAUList,
+                backgroundColor:
+                    'rgba(255, 99, 132, 0.2)',
+                borderColor:
+                    'rgba(255,99,132,1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    });
+
+</script>

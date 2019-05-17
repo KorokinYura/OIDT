@@ -1,0 +1,46 @@
+﻿@model List<Lab1.Models.ViewModels.StageViewModel>
+
+@{
+    ViewData["Title"] = "Stage";
+}
+
+<h2>Stage</h2>
+<hr />
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Starts
+            </th>
+            <th>
+                Ends
+            </th>
+            <th>
+                Wins
+            </th>
+            <th>
+                Currency
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var stage in Model)
+        {
+            <tr>
+                <td>
+                    @stage.StageStarts
+                </td>
+                <td>
+                    @stage.StageEnds
+                </td>
+                <td>
+                    @stage.WinsQuantity
+                </td>
+                <td>
+                    @stage.AllIncome
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

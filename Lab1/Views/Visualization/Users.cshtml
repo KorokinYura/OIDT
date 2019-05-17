@@ -1,0 +1,134 @@
+﻿@model List<Lab1.Models.ViewModels.User>
+
+@{
+    ViewData["Title"] = "Users";
+}
+
+<h2>Users</h2>
+<hr />
+
+<canvas id="genders" style="max-width: 500px;"></canvas>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+<script>
+    var ctx = document.getElementById("genders").getContext('2d');
+    var myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ["Male", "Female"],
+            datasets: [{
+                label: '# of Votes',
+                data: [@Model.Count(u => u.Gender == "male"), @Model.Count(u => u.Gender == "female")],
+                backgroundColor:
+                    'rgba(255, 99, 132, 0.2)',
+                borderColor:
+                    'rgba(255,99,132,1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    });
+
+</script>
+
+
+
+
+
+
+<br><br><br><br>
+<canvas id="age" style="max-width: 1000px;"></canvas>
+
+@{
+    ViewData["AgeList"] = @Model.Select(u => u.Age).Distinct().OrderBy(a => a).ToArray();
+    ViewData["AgeQuantityList"] = @Model.Select(u => u.Age).Distinct().OrderBy(a => a).Select(a => Model.Count(u => u.Age == a)).ToArray();
+}
+
+<script>
+    var ages = @Html.Raw(Json.Serialize(ViewData["AgeList"]));
+    var agesQuantity = @Html.Raw(Json.Serialize(ViewData["AgeQuantityList"]));
+    console.log(ages);
+
+    var ctx = document.getElementById("age").getContext('2d');
+    var ageChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ages,
+            datasets: [{
+                label: '# of Votes',
+                data: agesQuantity,
+                backgroundColor:
+                    'rgba(255, 99, 132, 0.2)',
+                borderColor:
+                    'rgba(255,99,132,1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    });
+
+</script>
+
+
+
+
+
+
+<br><br><br><br>
+<canvas id="countries" style="max-width: 1000px;"></canvas>
+
+@{
+    ViewData["CountriesList"] = @Model.Select(u => u.Country).Distinct().OrderBy(c => c).ToArray();
+    ViewData["CountriesQuantityList"] = @Model.Select(u => u.Country).Distinct().OrderBy(c => c).Select(c => Model.Count(u => u.Country == c)).ToArray();
+}
+
+<script>
+    var ages = @Html.Raw(Json.Serialize(ViewData["CountriesList"]));
+    var agesQuantity = @Html.Raw(Json.Serialize(ViewData["CountriesQuantityList"]));
+    console.log(ages);
+
+    var ctx = document.getElementById("countries").getContext('2d');
+    var ageChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ages,
+            datasets: [{
+                label: '# of Votes',
+                data: agesQuantity,
+                backgroundColor:
+                    'rgba(255, 99, 132, 0.2)',
+                borderColor:
+                    'rgba(255,99,132,1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    });
+
+</script>

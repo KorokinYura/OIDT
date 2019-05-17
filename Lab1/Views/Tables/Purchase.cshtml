@@ -1,0 +1,40 @@
+﻿@model List<Lab1.Models.ViewModels.PurchaseViewModel>
+
+@{
+    ViewData["Title"] = "Purchase";
+}
+
+<h2>Purchase</h2>
+<hr />
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Item
+            </th>
+            <th>
+                Quantity
+            </th>
+            <th>
+                Price
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var purchase in Model)
+        {
+            <tr>
+                <td>
+                    @purchase.Item
+                </td>
+                <td>
+                    @purchase.ItemsQuantity
+                </td>
+                <td>
+                    @purchase.AllPrice
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

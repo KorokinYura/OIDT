@@ -1,0 +1,53 @@
+﻿@model List<Lab1.Models.FirstGameLaunch>
+
+@{
+    ViewData["Title"] = "Users";
+}
+
+<h2>Users</h2>
+<hr />
+
+<canvas id="NewUsers" style="max-width: 1000px;"></canvas>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+@{
+    ViewData["DatesList"] = @Model.Select(fgl => fgl.Date).Distinct().OrderBy(d => d).ToArray();
+    ViewData["NewUsersQuantityList"] = @Model.Select(fgl => fgl.Date).OrderBy(d => d).Distinct().Select(date => Model.Count(fgl => fgl.Date == date)).ToArray();
+}
+
+<script>
+    var datesList = @Html.Raw(Json.Serialize(ViewData["DatesList"]));
+    var newUsersQuantityList = @Html.Raw(Json.Serialize(ViewData["NewUsersQuantityList"]));
+
+    console.log(datesList);
+    console.log(newUsersQuantityList);
+
+    var ctx = document.getElementById("NewUsers").getContext('2d');
+    var NewUsersChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: datesList,
+            datasets: [{
+                label: '# of Votes',
+                data: newUsersQuantityList,
+                backgroundColor:
+                    'rgba(255, 99, 132, 0.2)',
+                borderColor:
+                    'rgba(255,99,132,1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    });
+
+</script>
