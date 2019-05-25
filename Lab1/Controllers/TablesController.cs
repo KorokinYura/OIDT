@@ -29,23 +29,11 @@ namespace Lab1.Controllers
 
             foreach (var date in datesLaunches)
             {
-                var users = new List<string>();
-                int quantity = 0;
-
-                var iterationList = _db.GameLaunches.Where(gl => gl.Date == date);
-
-                foreach (var gl in iterationList)
-                {
-                    if (users.FirstOrDefault(u => u == gl.UdId) == null)
-                    {
-                        users.Add(gl.UdId);
-                        quantity++;
-                    }
-                }
+                var dau = _db.GameLaunches.Where(gl => gl.Date == date).Select(gl => gl.UdId).Distinct().Count();
 
                 list.Add(new DAUViewModel
                 {
-                    UsersQuantity = quantity,
+                    UsersQuantity = dau,
                     Date = date
                 });
             }
@@ -58,13 +46,12 @@ namespace Lab1.Controllers
             var startDate = new DateTime(2018, 1, 1);
             var endDate = new DateTime(2018, 2, 1);
 
-            var datesLaunches = _db.GameLaunches.Select(m => m.Date).Distinct().OrderBy(d => d.Date).ToList();
-
-            var retList = _db.FirstGameLaunches.Where(fgl => fgl.Date > startDate && fgl.Date < endDate);
+            var mau = _db.FirstGameLaunches.Where(gl => gl.Date >= startDate && gl.Date < endDate)
+                .Select(gl => gl.UdId).Distinct().Count();
 
             var ret = new MAUViewModel
             {
-                UsersQuantity = retList.Count(),
+                UsersQuantity = mau,
                 StartDate = startDate,
                 EndDate = endDate
             };
@@ -103,23 +90,31 @@ namespace Lab1.Controllers
         {
             var datesLaunches = _db.CurrencyPurchases.Select(m => m.Date).Distinct().OrderBy(d => d.Date).ToList();
 
-            var retList = new List<RevenueViewModel>();
+            var retList = new List<CurrencyViewModel>();
 
             foreach (var date in datesLaunches)
             {
-                double currency = 0;
+                int boughtCurrency = 0;
+                int earnedCurrency = 0;
 
-                var iterationList = _db.CurrencyPurchases.Where(cp => cp.Date == date);
+                var boughtList = _db.CurrencyPurchases.Where(cp => cp.Date == date).ToList();
+                var earnedList = _db.StageEnds.Where(se => se.Date == date).ToList();
 
-                foreach (var cp in iterationList)
+                for (var i = 0; i < boughtList.Count; i++)
                 {
-                    currency += cp.Income;
+                    boughtCurrency += boughtList[i].Income;
                 }
 
-                retList.Add(new RevenueViewModel
+                for (var i = 0; i < earnedList.Count; i++)
+                {
+                    earnedCurrency += earnedList[i].Income;
+                }
+
+                retList.Add(new CurrencyViewModel
                 {
                     Date = date,
-                    Income = currency
+                    BoughtCurrency = boughtCurrency,
+                    EarnedCurrency = earnedCurrency
                 });
             }
 
@@ -158,6 +153,7 @@ namespace Lab1.Controllers
 
                 retList.Add(new StageViewModel
                 {
+                    StageNumber = stage,
                     StageStarts = starts,
                     StageEnds = ends,
                     WinsQuantity = wins,
@@ -174,14 +170,14 @@ namespace Lab1.Controllers
 
             var items = _db.IngamePurchases.Select(m => m.Item).Distinct().ToList();
 
-            foreach(var item in items)
+            foreach (var item in items)
             {
                 int quantity = 0;
                 double price = 0;
 
                 var iterationList = _db.IngamePurchases.Where(cp => cp.Item == item);
 
-                foreach(var purchase in iterationList)
+                foreach (var purchase in iterationList)
                 {
                     quantity++;
                     price += purchase.Price;

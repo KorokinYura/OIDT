@@ -43,23 +43,11 @@ namespace Lab1.Controllers
 
             foreach (var date in datesLaunches)
             {
-                var users = new List<string>();
-                int quantity = 0;
-
-                var iterationList = _db.GameLaunches.Where(gl => gl.Date == date);
-
-                foreach (var gl in iterationList)
-                {
-                    if (users.FirstOrDefault(u => u == gl.UdId) == null)
-                    {
-                        users.Add(gl.UdId);
-                        quantity++;
-                    }
-                }
+                var dau = _db.GameLaunches.Where(gl => gl.Date == date).Select(gl => gl.UdId).Distinct().Count();
 
                 list.Add(new DAUViewModel
                 {
-                    UsersQuantity = quantity,
+                    UsersQuantity = dau,
                     Date = date
                 });
             }

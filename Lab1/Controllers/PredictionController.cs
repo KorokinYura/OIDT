@@ -32,30 +32,18 @@ namespace Lab1.Controllers
 
             foreach (var date in iterDates)
             {
-                var users = new List<string>();
-                int quantity = 0;
-
-                var iterationList = _db.GameLaunches.Where(gl => gl.Date == date);
-
-                foreach (var gl in iterationList)
-                {
-                    if (users.FirstOrDefault(u => u == gl.UdId) == null)
-                    {
-                        users.Add(gl.UdId);
-                        quantity++;
-                    }
-                }
+                var dau = _db.GameLaunches.Where(gl => gl.Date == date).Select(gl => gl.UdId).Distinct().Count();
 
                 list.Add(new DAUViewModel
                 {
-                    UsersQuantity = quantity,
+                    UsersQuantity = dau,
                     Date = date
                 });
             }
 
             int uniqueUsersDifference = list[1].UsersQuantity - list[0].UsersQuantity;
 
-            int uniqueUsers = uniqueUsersDifference * days / dates.Count;
+            int uniqueUsers = uniqueUsersDifference / iterDates.Count;
 
             return View(uniqueUsers);
         }

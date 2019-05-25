@@ -31,73 +31,96 @@ namespace Lab1.Controllers
         }
 
         [HttpPost]
-        public IActionResult UploadJsonToDb(int index)
+        public IActionResult UploadJsonToDb(int index, int quantity)
         {
-            //ClearDb();
-
             var path = _appEnvironment.WebRootPath + "\\jsons";
             var files = Directory.GetFiles(path).Where(f => f.Contains(".json")).ToList();
 
-            //var text = System.IO.File.ReadAllText(path + "\\2018-01-01-1.json");
-            var text = System.IO.File.ReadAllText(files[index]);
-
-            List<JsonFullObject> jsonModels = new List<JsonFullObject>();
-
-            jsonModels = JsonConvert.DeserializeObject<List<JsonFullObject>>(text);
-
-            for (int i = 0; i < jsonModels.Count; i++)
+            for (int j = index; j < quantity + index; j++)
             {
-                switch (jsonModels[i].EventId)
+                var text = string.Empty;
+
+                if (files.Count > j)
+                    text = System.IO.File.ReadAllText(files[j]);
+                else
+                    break;
+
+                List<JsonFullObject> jsonModels = new List<JsonFullObject>();
+
+                jsonModels = JsonConvert.DeserializeObject<List<JsonFullObject>>(text);
+
+                for (int i = 0; i < jsonModels.Count; i++)
                 {
-                    case 1:
-                        var gl = new GameLaunch();
-                        gl.Date = jsonModels[i].Date;
+                    switch (jsonModels[i].EventId)
+                    {
+                        case 1:
+                            var gl = new GameLaunch
+                            {
+                                Date = jsonModels[i].Date,
+                                EventId = jsonModels[i].EventId
+                            };
 
-                        _db.GameLaunches.Add(gl);
-                        break;
-                    case 2:
-                        var fgl = new FirstGameLaunch();
-                        fgl.Date = jsonModels[i].Date;
-                        fgl.Gender = jsonModels[i].Parameters.Gender;
-                        fgl.Age = jsonModels[i].Parameters.Age;
-                        fgl.Country = jsonModels[i].Parameters.Country;
+                            _db.GameLaunches.Add(gl);
+                            break;
+                        case 2:
+                            var fgl = new FirstGameLaunch
+                            {
+                                Date = jsonModels[i].Date,
+                                Gender = jsonModels[i].Parameters.Gender,
+                                Age = jsonModels[i].Parameters.Age,
+                                Country = jsonModels[i].Parameters.Country,
+                                EventId = jsonModels[i].EventId
+                            };
 
-                        _db.FirstGameLaunches.Add(fgl);
-                        break;
-                    case 3:
-                        var ss = new StageStart();
-                        ss.Date = jsonModels[i].Date;
-                        ss.Stage = jsonModels[i].Parameters.Stage;
+                            _db.FirstGameLaunches.Add(fgl);
+                            break;
+                        case 3:
+                            var ss = new StageStart
+                            {
+                                Date = jsonModels[i].Date,
+                                Stage = jsonModels[i].Parameters.Stage,
+                                EventId = jsonModels[i].EventId
+                            };
 
-                        _db.StageStarts.Add(ss);
-                        break;
-                    case 4:
-                        var se = new StageEnd();
-                        se.Date = jsonModels[i].Date;
-                        se.Stage = jsonModels[i].Parameters.Stage;
-                        se.Win = jsonModels[i].Parameters.Win;
-                        se.Time = jsonModels[i].Parameters.Time;
-                        se.Income = jsonModels[i].Parameters.Income;
+                            _db.StageStarts.Add(ss);
+                            break;
+                        case 4:
+                            var se = new StageEnd
+                            {
+                                Date = jsonModels[i].Date,
+                                Stage = jsonModels[i].Parameters.Stage,
+                                Win = jsonModels[i].Parameters.Win,
+                                Time = jsonModels[i].Parameters.Time,
+                                Income = jsonModels[i].Parameters.Income,
+                                EventId = jsonModels[i].EventId
+                            };
 
-                        _db.StageEnds.Add(se);
-                        break;
-                    case 5:
-                        var ip = new IngamePurchase();
-                        ip.Date = jsonModels[i].Date;
-                        ip.Item = jsonModels[i].Parameters.Item;
-                        ip.Price = jsonModels[i].Parameters.Price;
+                            _db.StageEnds.Add(se);
+                            break;
+                        case 5:
+                            var ip = new IngamePurchase
+                            {
+                                Date = jsonModels[i].Date,
+                                Item = jsonModels[i].Parameters.Item,
+                                Price = jsonModels[i].Parameters.Price,
+                                EventId = jsonModels[i].EventId
+                            };
 
-                        _db.IngamePurchases.Add(ip);
-                        break;
-                    case 6:
-                        var cp = new CurrencyPurchase();
-                        cp.Date = jsonModels[i].Date;
-                        cp.Name = jsonModels[i].Parameters.Name;
-                        cp.Price = jsonModels[i].Parameters.Price;
-                        cp.Income = jsonModels[i].Parameters.Income;
+                            _db.IngamePurchases.Add(ip);
+                            break;
+                        case 6:
+                            var cp = new CurrencyPurchase
+                            {
+                                Date = jsonModels[i].Date,
+                                Name = jsonModels[i].Parameters.Name,
+                                Price = jsonModels[i].Parameters.Price,
+                                Income = jsonModels[i].Parameters.Income,
+                                EventId = jsonModels[i].EventId
+                            };
 
-                        _db.CurrencyPurchases.Add(cp);
-                        break;
+                            _db.CurrencyPurchases.Add(cp);
+                            break;
+                    }
                 }
             }
 

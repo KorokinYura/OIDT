@@ -1,4 +1,4 @@
-﻿@model List<Lab1.Models.ViewModels.RevenueViewModel>
+﻿@model List<Lab1.Models.ViewModels.CurrencyViewModel>
 
 @{
     ViewData["Title"] = "Currency";
@@ -14,7 +14,10 @@
                 @Html.DisplayNameFor(model => model[0].Date)
             </th>
             <th>
-                Currency
+                Bought Currency
+            </th>
+            <th>
+                Earned Currency
             </th>
         </tr>
     </thead>
@@ -26,7 +29,10 @@
                     @rev.Date.ToShortDateString()
                 </td>
                 <td>
-                    @rev.Income
+                    @rev.BoughtCurrency
+                </td>
+                <td>
+                    @rev.EarnedCurrency
                 </td>
             </tr>
         }
