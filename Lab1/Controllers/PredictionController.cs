@@ -41,9 +41,8 @@ namespace Lab1.Controllers
                 });
             }
 
-            int uniqueUsersDifference = list[1].UsersQuantity - list[0].UsersQuantity;
 
-            int uniqueUsers = uniqueUsersDifference / iterDates.Count;
+            int uniqueUsers = (list[1].UsersQuantity + list[0].UsersQuantity) / iterDates.Count;
 
             return View(uniqueUsers);
         }
@@ -64,9 +63,8 @@ namespace Lab1.Controllers
                 users.Add(_db.FirstGameLaunches.Count(fgl => fgl.Date == date));
             }
 
-            int uniqueUsersDifference = users[1] - users[0];
 
-            int newUsers = uniqueUsersDifference * days / dates.Count;
+            int newUsers = (users[1] + users[0]) / users.Count;
 
             return View(newUsers);
         }
@@ -99,10 +97,9 @@ namespace Lab1.Controllers
                     Income = income
                 });
             }
+            
 
-            double averageRevenue = retList[1].Income - retList[0].Income;
-
-            double dailyRevenue = averageRevenue / dates.Count;
+            double dailyRevenue = (retList[1].Income + retList[0].Income) / retList.Count;
 
             return View(dailyRevenue);
         }
@@ -116,16 +113,15 @@ namespace Lab1.Controllers
                 dates.Last()
             };
 
-            List<int> soldItems = new List<int>();
+            List<double> soldItems = new List<double>();
 
             foreach (var date in iterDates)
             {
-                soldItems.Add(_db.IngamePurchases.Count(ip => ip.Date == date));
+                soldItems.Add(_db.IngamePurchases.Where(ip => ip.Date == date).Sum(ip => ip.Price));
             }
 
-            int averagePurchases = soldItems[1] - soldItems[0];
 
-            int dailyPurchase = averagePurchases / dates.Count;
+            int dailyPurchase = (int)((soldItems[1] + soldItems[0]) / soldItems.Count);
 
             return View(dailyPurchase);
         }

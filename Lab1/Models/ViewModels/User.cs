@@ -12,6 +12,7 @@ namespace Lab1.Models.ViewModels
         public string Country { get; set; }
 
         public double Revenue { get; set; }
-        public bool BrokeEconomy { get; set; }
+        public int Earned { get; set; }
+        public int Spend { get; set; }
     }
 }
